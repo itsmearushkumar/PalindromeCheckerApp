@@ -1,92 +1,73 @@
 import java.util.*;
 
-// 1️⃣ Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
-
-// 2️⃣ Stack Strategy (LIFO)
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        Stack<Character> stack = new Stack<>();
-
-        for (char ch : input.toCharArray()) {
-            stack.push(ch);
-        }
-
-        for (int i = 0; i < input.length(); i++) {
-            if (input.charAt(i) != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// 3️⃣ Deque Strategy (Front & Rear Comparison)
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char ch : input.toCharArray()) {
-            deque.addLast(ch);
-        }
-
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// 4️⃣ Context Class (Strategy Injection)
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    // Inject strategy at runtime
-    public PalindromeContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean execute(String input) {
-        return strategy.checkPalindrome(input);
-    }
-}
-
-// 5️⃣ Main Class
-public class Main {
+public class PalindromePerformanceTest {
 
     public static void main(String[] args) {
 
-        String word = "racecar";
+        String input = "A man a plan a canal Panama".replaceAll("\\s+", "").toLowerCase();
 
-        // Choose Strategy at Runtime
-        PalindromeContext context = new PalindromeContext(new StackStrategy());
+        // Increase size for better time comparison
+        input = input.repeat(1000);
 
-        boolean result = context.execute(word);
+        // 1️⃣ Reverse String Method
+        long start1 = System.nanoTime();
+        boolean result1 = reverseMethod(input);
+        long end1 = System.nanoTime();
+        long time1 = end1 - start1;
 
-        System.out.println("Using Stack Strategy:");
-        System.out.println("Is Palindrome? " + result);
+        // 2️⃣ Two Pointer Method
+        long start2 = System.nanoTime();
+        boolean result2 = twoPointerMethod(input);
+        long end2 = System.nanoTime();
+        long time2 = end2 - start2;
 
-        // Switch to Deque Strategy dynamically
-        context.setStrategy(new DequeStrategy());
+        // 3️⃣ Stack Method
+        long start3 = System.nanoTime();
+        boolean result3 = stackMethod(input);
+        long end3 = System.nanoTime();
+        long time3 = end3 - start3;
 
-        result = context.execute(word);
+        // Display Results
+        System.out.println("Palindrome Results:");
+        System.out.println("Reverse Method: " + result1 + " | Time: " + time1 + " ns");
+        System.out.println("Two Pointer Method: " + result2 + " | Time: " + time2 + " ns");
+        System.out.println("Stack Method: " + result3 + " | Time: " + time3 + " ns");
+    }
 
-        System.out.println("\nUsing Deque Strategy:");
-        System.out.println("Is Palindrome? " + result);
+    // Method 1: Reverse String
+    public static boolean reverseMethod(String str) {
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
+    }
+
+    // Method 2: Two Pointer
+    public static boolean twoPointerMethod(String str) {
+        int start = 0;
+        int end = str.length() - 1;
+
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    // Method 3: Stack
+    public static boolean stackMethod(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+            stack.push(ch);
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) != stack.pop()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
