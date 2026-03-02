@@ -2,12 +2,15 @@ class PalindromeChecker {
 
     public static void main(String[] args) {
 
-        String original = "radar";
+        String original = "A man a plan a canal Panama";
 
-        boolean isPalindrome = checkPalindrome(original, 0, original.length() - 1);
+        // Normalize string (remove spaces and convert to lowercase)
+        String normalized = original.replaceAll("\\s+", "").toLowerCase();
+
+        boolean isPalindrome = checkPalindrome(normalized);
 
         if (isPalindrome) {
-            System.out.println("The string \"" + original + "\" is a Palindrome.");
+            System.out.println("The string \"" + original + "\" is a Palindrome (ignoring spaces & case).");
         } else {
             System.out.println("The string \"" + original + "\" is NOT a Palindrome.");
         }
@@ -15,20 +18,22 @@ class PalindromeChecker {
         System.out.println("Program finished.");
     }
 
-    // Recursive Method
-    public static boolean checkPalindrome(String str, int start, int end) {
+    // Two-pointer palindrome logic
+    public static boolean checkPalindrome(String str) {
 
-        // Base Condition: If pointers cross or meet
-        if (start >= end) {
-            return true;
+        int start = 0;
+        int end = str.length() - 1;
+
+        while (start < end) {
+
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+
+            start++;
+            end--;
         }
 
-        // If characters don't match
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call for inner substring
-        return checkPalindrome(str, start + 1, end - 1);
+        return true;
     }
 }
