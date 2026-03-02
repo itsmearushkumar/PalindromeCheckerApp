@@ -1,39 +1,49 @@
+import java.util.Stack;
+
+// PalindromeChecker class (Encapsulated Logic)
 class PalindromeChecker {
 
-    public static void main(String[] args) {
+    private String input;   // Data hidden inside class
 
-        String original = "A man a plan a canal Panama";
-
-        // Normalize string (remove spaces and convert to lowercase)
-        String normalized = original.replaceAll("\\s+", "").toLowerCase();
-
-        boolean isPalindrome = checkPalindrome(normalized);
-
-        if (isPalindrome) {
-            System.out.println("The string \"" + original + "\" is a Palindrome (ignoring spaces & case).");
-        } else {
-            System.out.println("The string \"" + original + "\" is NOT a Palindrome.");
-        }
-
-        System.out.println("Program finished.");
+    // Constructor
+    public PalindromeChecker(String input) {
+        this.input = input;
     }
 
-    // Two-pointer palindrome logic
-    public static boolean checkPalindrome(String str) {
+    // Public method exposed to outside world
+    public boolean checkPalindrome() {
 
-        int start = 0;
-        int end = str.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (start < end) {
+        // Push characters into stack
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
 
-            if (str.charAt(start) != str.charAt(end)) {
+        // Compare characters
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != stack.pop()) {
                 return false;
             }
-
-            start++;
-            end--;
         }
 
         return true;
+    }
+}
+
+// Main class to test functionality
+public class Main {
+
+    public static void main(String[] args) {
+
+        PalindromeChecker checker = new PalindromeChecker("madam");
+
+        if (checker.checkPalindrome()) {
+            System.out.println("The string is a Palindrome.");
+        } else {
+            System.out.println("The string is NOT a Palindrome.");
+        }
+
+        System.out.println("Program finished.");
     }
 }
