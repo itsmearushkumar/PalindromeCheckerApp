@@ -1,36 +1,36 @@
-import java.util.Deque;
-import java.util.ArrayDeque;
-
 class PalindromeChecker {
+
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public static void main(String[] args) {
 
-        // Original String
-        String original = "racecar";
+        String original = "madam";
 
-        // Create Deque
-        Deque<Character> deque = new ArrayDeque<>();
+        // Convert string to linked list
+        Node head = null, tail = null;
 
-        // Insert characters into deque
         for (int i = 0; i < original.length(); i++) {
-            deque.addLast(original.charAt(i));   // Insert at rear
-        }
-
-        boolean isPalindrome = true;
-
-        // Compare front and rear elements
-        while (deque.size() > 1) {
-
-            char front = deque.removeFirst();  // Remove from front
-            char rear  = deque.removeLast();   // Remove from rear
-
-            if (front != rear) {
-                isPalindrome = false;
-                break;
+            Node newNode = new Node(original.charAt(i));
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
         }
 
-        // Display result
+        // Check palindrome
+        boolean isPalindrome = checkPalindrome(head);
+
         if (isPalindrome) {
             System.out.println("The string \"" + original + "\" is a Palindrome.");
         } else {
@@ -38,5 +38,53 @@ class PalindromeChecker {
         }
 
         System.out.println("Program finished.");
+    }
+
+    // Method to check palindrome using fast & slow pointer
+    public static boolean checkPalindrome(Node head) {
+
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        // Find middle using Fast & Slow pointer
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
+
+        // Compare halves
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data)
+                return false;
+
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
+
+    // In-place reversal of linked list
+    public static Node reverse(Node head) {
+
+        Node prev = null;
+        Node current = head;
+        Node next = null;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
     }
 }
