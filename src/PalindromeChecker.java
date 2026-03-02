@@ -3,34 +3,37 @@
 
 class PalindromeChecker {
 
-    // Main method - Entry point of Java application
+
     public static void main(String[] args) {
 
-        // Display Application Name
-        System.out.println("=====================================");
-        System.out.println("      WELCOME TO PALINDROME CHECKER  ");
-        System.out.println("=====================================");
+        // UC2: Check whether a hardcoded string is a palindrome
 
-        // Display Application Version
-        System.out.println("Application Name   : Palindrome Checker");
-        System.out.println("Application Version: 1.0");
-        System.out.println("Developed By       : Your Name");
+        class PalindromeCheckerUC2 {
 
-        System.out.println("-------------------------------------");
+            // Main method - Entry point of the program
+            public static void main(String[] args) {
 
-        // Application startup message
-        System.out.println("The application has started successfully.");
-        System.out.println("Ready to check palindromes!");
+                // Hardcoded string (String Literal)
+                String word = "madam";
 
-        System.out.println("-------------------------------------");
+                // Variable to store reversed string
+                String reversed = "";
 
-        // Program continues to next use case
-        System.out.println("Proceeding to next use case...\n");
+                // Reverse the string using loop
+                for (int i = word.length() - 1; i >= 0; i--) {
+                    reversed = reversed + word.charAt(i);
+                }
 
-        // (Later you can call palindrome checking logic here)
+                // Check if original string equals reversed string
+                if (word.equals(reversed)) {
+                    System.out.println("The string \"" + word + "\" is a Palindrome.");
+                } else {
+                    System.out.println("The string \"" + word + "\" is NOT a Palindrome.");
+                }
 
-        // If you want to exit instead, use:
-        // System.out.println("Exiting application...");
-        // System.exit(0);
+                // Program ends
+                System.out.println("Program exited successfully.");
+            }
+        }
     }
 }
